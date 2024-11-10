@@ -84,11 +84,11 @@ const allBooks = (requst, h) => {
   return response;
 };
 
+
 const getBookById = (request, h) => {
   const { bookId } = request.params;
 
-
-  const book = books.filter((b) => b.id === bookId);
+  const book = books.find((b) => b.id === bookId);
 
   if (book) {
     const response = h.response({
@@ -109,5 +109,22 @@ const getBookById = (request, h) => {
   return response;
 };
 
+const bookIdWithFinishedReading = (request, h) => {
+  const { bookId } = request.params;
 
-module.exports = { addBooks, allBooks, getBookById };
+  const book = books.find((b) => b.id === bookId);
+
+  if (book.finished){
+    const response = h.response({
+      status: 'success',
+      data: {
+        book,
+      }
+    });
+    response.code(200);
+    return response;
+  }
+};
+
+
+module.exports = { addBooks, allBooks, getBookById, bookIdWithFinishedReading };
