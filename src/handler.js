@@ -66,4 +66,48 @@ const addBooks = (request, h) => {
   return response;
 };
 
-module.exports = { addBooks };
+
+const allBooks = (requst, h) => {
+  const existingBooks = books.map((book) => ({
+    id: book.id,
+    name: book.name,
+    publisher: book.publisher,
+  }));
+
+  const response = h.response({
+    status: 'success',
+    data: {
+      books: existingBooks
+    },
+  });
+  response.code(200);
+  return response;
+};
+
+const getBookById = (request, h) => {
+  const { bookId } = request.params;
+
+
+  const book = books.filter((b) => b.id === bookId);
+
+  if (book) {
+    const response = h.response({
+      status: 'success',
+      data: {
+        book,
+      },
+    });
+    response.code(200);
+    return response;
+  }
+
+  const response = h.response({
+    status: 'fail',
+    message: 'Buku tidak ditemukan',
+  });
+  response.code(404);
+  return response;
+};
+
+
+module.exports = { addBooks, allBooks, getBookById };
